@@ -40,6 +40,7 @@ jobs:
         env:
           CODEX_HOME: ${{ runner.temp }}/codex
         run: |
+          mkdir -p "$CODEX_HOME"
           codex plugin marketplace add "$GITHUB_WORKSPACE"
           codex plugin add orcacd@orcacd
 

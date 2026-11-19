@@ -1,0 +1,12 @@
+{
+  "config": {
+    // Long lines are fine in prose and tables
+    "MD013": false,
+    // The README header uses HTML for the logo and badges
+    "MD033": false,
+    // CLAUDE.md and the PR template intentionally don't start with a heading
+    "MD041": false
+  },
+  "globs": ["**/*.md"],
+  "ignores": ["node_modules/**", "lychee/**"]
+}

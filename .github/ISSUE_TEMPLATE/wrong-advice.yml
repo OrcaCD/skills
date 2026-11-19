@@ -1,0 +1,46 @@
+name: "🤖 Skill gave wrong advice"
+description: "A skill told your agent something wrong, outdated, or didn't load when it should have"
+title: "🤖 Wrong advice: "
+type: 'Bug'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this! OrcaCD changes quickly, so outdated skills are expected and reports like this help a lot.
+  - type: input
+    id: skill
+    attributes:
+      label: Skill
+      description: Which skill was involved, if you know?
+      placeholder: e.g. writing-compose-files
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent
+      options:
+        - Claude Code
+        - Codex
+        - Other (please specify below)
+    validations:
+      required: true
+  - type: input
+    id: orcacd-version
+    attributes:
+      label: OrcaCD version
+      placeholder: e.g. 0.5.0
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: What did you ask?
+      description: The prompt you gave your agent.
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did the agent say or do, and what should it have done instead?
+    validations:
+      required: true

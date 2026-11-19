@@ -1,0 +1,107 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  plugin:
+    name: Validate plugin
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        name: Checkout code
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        name: Setup Node.js
+        with:
+          node-version: 25
+
+      # Validate against the latest releases, since that is what users install the plugin with.
+      # No lockfile on purpose: pinning would validate against outdated CLIs.
+      - name: Install Claude Code and Codex
+        run: npm install --global @anthropic-ai/claude-code@latest @openai/codex@latest # zizmor: ignore[adhoc-packages]
+
+      - name: Validate Claude Code plugin and marketplace
+        run: claude plugin validate .
+
+      - name: Install plugin in Codex
+        env:
+          CODEX_HOME: ${{ runner.temp }}/codex
+        run: |
+          codex plugin marketplace add "$GITHUB_WORKSPACE"
+          codex plugin add orcacd@orcacd
+
+      - name: Run repository checks
+        run: python3 scripts/validate.py
+
+  skills:
+    name: Validate skills
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        name: Checkout code
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        name: Setup uv
+        with:
+          enable-cache: false
+
+      # Reference validator from the Agent Skills specification
+      - name: Validate SKILL.md files
+        env:
+          SKILLS_REF: git+https://github.com/agentskills/agentskills@83021e2be457a9b6679148719c1f6074f0ad975e#subdirectory=skills-ref
+        run: |
+          shopt -s nullglob
+          status=0
+          for skill in skills/*/; do
+            uvx --from "$SKILLS_REF" skills-ref validate "$skill" || status=1
+          done
+          exit "$status"
+
+  markdown:
+    name: Lint Markdown
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        name: Checkout code
+        with:
+          persist-credentials: false
+
+      - uses: DavidAnson/markdownlint-cli2-action@696eb3f2509270d7b882d2aa68347bc676e7af34 # v25.0.0
+        name: Run markdownlint
+
+  actions:
+    name: Check GitHub Actions
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      security-events: write # Required to upload zizmor results as security events
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        name: Checkout code
+        with:
+          persist-credentials: false
+
+      - name: Run actionlint
+        uses: docker://rhysd/actionlint@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667 # 1.7.12
+        with:
+          args: -color
+
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd # v0.8.1

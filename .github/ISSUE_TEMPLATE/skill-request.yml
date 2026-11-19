@@ -1,0 +1,17 @@
+name: "✨ Skill Request"
+description: "Suggest a new skill or a change to an existing one"
+title: "✨ Skill: "
+type: 'Feature'
+body:
+  - type: textarea
+    id: use-case
+    attributes:
+      label: What should your agent be able to do?
+      description: Describe the task, and what you would ask your agent.
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Links to docs, examples, or anything else that helps.

@@ -1,0 +1,3 @@
+# Badge services and GitHub rate-limit automated requests
+accept = ["200..=299", "429"]
+exclude = ["^https://shieldcn\\.dev/"]

@@ -1,4 +1,4 @@
-# <div align="center"><img src="https://raw.githubusercontent.com/OrcaCD/orca-cd/f6fb48965df90a57a2b181e9e2b359653ae5c6b9/frontend/public/assets/logo-dark-256.png" width="100"/> <br>OrcaCD Skills</div>
+# <div align="center"><img alt="OrcaCD logo" src="https://raw.githubusercontent.com/OrcaCD/orca-cd/f6fb48965df90a57a2b181e9e2b359653ae5c6b9/frontend/public/assets/logo-dark-256.png" width="100"/> <br>OrcaCD Skills</div>
 
 <div align="center">
 Agent skills and plugins for <a href="https://orcacd.dev">OrcaCD</a><br><br>

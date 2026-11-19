@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🐛 Bugs in OrcaCD
+    url: https://github.com/OrcaCD/orca-cd/issues
+    about: Please report bugs in the Hub or agent in the main repository.
+  - name: ⁉️ Questions
+    url: https://github.com/OrcaCD/orca-cd/discussions
+    about: Please create a discussion for questions or help requests.

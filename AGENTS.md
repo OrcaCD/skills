@@ -10,7 +10,7 @@ The repository root is a single plugin named `orcacd`, published through a marke
 
 ## Layout
 
-```
+```text
 .claude-plugin/
   plugin.json        # Claude Code plugin manifest
   marketplace.json   # Claude Code marketplace (plugin source: "./")
@@ -31,7 +31,7 @@ skills/
 - Use the open `SKILL.md` format so skills work in Claude Code, Codex, Cursor and other agents. Don't rely on agent-specific frontmatter or tools.
 - The directory name must match the `name` in the frontmatter (lowercase, hyphens).
 - The `description` decides when an agent loads the skill. Say what the skill does and when to use it, with the words a user would actually type ("compose file", "deploy failed", …).
-- Keep skills short and procedural. Link to the docs at `https://orcacd.dev/docs/...` instead of copying them; the full index is at https://orcacd.dev/llms.txt. OrcaCD changes a lot, and copied docs go stale with every breaking change.
+- Keep skills short and procedural. Link to the docs at `https://orcacd.dev/docs/...` instead of copying them; the full index is at <https://orcacd.dev/llms.txt>. OrcaCD changes a lot, and copied docs go stale with every breaking change.
 - State the minimum supported version near the top of the body, e.g. `Requires OrcaCD ≥ 0.5.0.`
 - Put long reference material in `references/` and link to it from `SKILL.md`, so it is only loaded when needed.
 
@@ -55,10 +55,14 @@ Requires OrcaCD ≥ 0.5.0.
 
 ## Validation
 
-Before opening a PR, check that the manifests are valid:
+CI (`.github/workflows/ci.yml`) runs on every PR. To run the main checks locally:
 
 ```sh
-claude plugin validate .
+claude plugin validate .        # Claude Code plugin and marketplace manifests
+python3 scripts/validate.py     # manifests match, no versions, skills are complete
+npx markdownlint-cli2           # Markdown style
 ```
 
-When adding or renaming a skill, update the skills table in `README.md`.
+`scripts/validate.py` requires every skill to contain a `Requires OrcaCD ≥ x.y` line and to be listed in the skills table in `README.md`, linking to `skills/<name>/SKILL.md`. CI also validates each `SKILL.md` against the [Agent Skills specification](https://agentskills.io/specification), installs the plugin in Codex, and lints the workflows with actionlint and zizmor.
+
+A weekly job (`.github/workflows/links.yml`) checks all links and opens an issue when docs links break.

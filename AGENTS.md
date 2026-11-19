@@ -48,8 +48,9 @@ Requires OrcaCD ≥ 0.5.0.
 
 ## Versioning and releases
 
-- Plugin releases are tagged to match OrcaCD Hub versions (e.g. `v0.5.0`).
-- The `version` field must be identical in `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json`. Bump both when releasing, otherwise installed plugins won't pick up the update.
+- There are no releases. `main` is always the latest version and must work with the latest OrcaCD release.
+- Don't add a `version` field to the plugin manifests or marketplace entries. Without it, Claude Code uses the commit SHA as the version and Codex reinstalls the plugin on every marketplace upgrade, so every commit reaches users. With it, users only get changes when the field is bumped.
+- When OrcaCD releases a new Hub version, tag the matching commit here with the same version (e.g. `v0.5.0`), so users on older Hubs can pin to it.
 - Keep the plugin name `orcacd` and the marketplace name `orcacd` stable; users install with `orcacd@orcacd`.
 
 ## Validation

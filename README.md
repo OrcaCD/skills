@@ -10,7 +10,7 @@ Agent skills and plugins for <a href="https://orcacd.dev">OrcaCD</a><br><br>
 This repository teaches AI coding agents how to work with OrcaCD. It contains [Agent Skills](https://agentskills.io) (`SKILL.md`) that cover how OrcaCD expects a repository and its compose files to look, and what to do when a deploy fails. The skills are packaged as a plugin for Claude Code and Codex, and the `SKILL.md` files also work in any other agent that supports the format.
 
 > [!WARNING]
-> OrcaCD is in early development and not yet production-ready. Expect breaking changes, and check that the plugin version matches your Hub version.
+> OrcaCD is in early development and not yet production-ready. Expect breaking changes. The skills always target the latest OrcaCD release.
 
 ## Installation
 
@@ -51,7 +51,9 @@ An MCP server built into the Hub will give agents access to live application and
 
 ## Versioning
 
-Plugin releases are tagged to match OrcaCD Hub versions. Each skill states the minimum OrcaCD version it supports.
+There are no plugin releases: `main` is the latest version, and every commit is an update. To get the latest skills, run `/plugin marketplace update orcacd` in Claude Code or `codex plugin marketplace upgrade orcacd` in Codex.
+
+Each skill states the minimum OrcaCD version it supports. If you run an older Hub, you can pin the skills to the tag of your Hub version, e.g. `codex plugin marketplace add OrcaCD/skills@v0.5.0`.
 
 ## Contribute
 

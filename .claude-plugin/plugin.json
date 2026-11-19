@@ -1,6 +1,5 @@
 {
   "name": "orcacd",
-  "version": "0.5.0",
   "description": "Skills for writing, deploying and debugging Docker Compose apps managed by OrcaCD, the simple GitOps tool for Docker.",
   "author": {
     "name": "OrcaCD",

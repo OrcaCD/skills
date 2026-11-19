@@ -1,0 +1,19 @@
+{
+  "name": "orcacd",
+  "owner": {
+    "name": "OrcaCD",
+    "url": "https://github.com/OrcaCD"
+  },
+  "metadata": {
+    "description": "Official OrcaCD plugins for AI coding agents."
+  },
+  "plugins": [
+    {
+      "name": "orcacd",
+      "source": "./",
+      "description": "Skills for writing, deploying and debugging Docker Compose apps managed by OrcaCD.",
+      "category": "deployment",
+      "homepage": "https://orcacd.dev"
+    }
+  ]
+}

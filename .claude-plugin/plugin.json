@@ -1,0 +1,20 @@
+{
+  "name": "orcacd",
+  "version": "0.5.0",
+  "description": "Skills for writing, deploying and debugging Docker Compose apps managed by OrcaCD, the simple GitOps tool for Docker.",
+  "author": {
+    "name": "OrcaCD",
+    "url": "https://github.com/OrcaCD"
+  },
+  "homepage": "https://orcacd.dev",
+  "repository": "https://github.com/OrcaCD/skills",
+  "license": "MIT",
+  "keywords": [
+    "orcacd",
+    "gitops",
+    "docker",
+    "docker-compose",
+    "deployment"
+  ],
+  "icon": "./assets/icon.png"
+}

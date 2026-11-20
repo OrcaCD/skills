@@ -4,6 +4,7 @@
 - The Claude Code and Codex manifests describe the same plugin.
 - No manifest sets a version, so every commit to main reaches users.
 - Paths in the Codex manifest are valid; Codex silently ignores broken ones.
+- There is no root .mcp.json, which Codex would load with a broken URL.
 - Every skill states its minimum OrcaCD version and is listed in the README.
 """
 
@@ -68,6 +69,10 @@ def check_manifests() -> None:
     icon = claude.get("icon")
     if icon and not (ROOT / icon).is_file():
         error(f".claude-plugin/plugin.json: icon {icon!r} does not exist")
+
+    # Codex loads a root .mcp.json automatically, but can't fill in the Hub URL
+    if (ROOT / ".mcp.json").exists():
+        error(".mcp.json: declare MCP servers in .claude-plugin/plugin.json instead, see AGENTS.md")
 
 
 def check_skills() -> None:

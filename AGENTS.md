@@ -8,6 +8,8 @@ User-facing [Agent Skills](https://agentskills.io) for [OrcaCD](https://orcacd.d
 
 The repository root is a single plugin named `orcacd`, published through a marketplace of the same name for both Claude Code and Codex.
 
+The plugin also connects to the MCP server of the user's Hub at `<hub>/api/v1/mcp`. The server and its tools live in the [main repository](https://github.com/OrcaCD/orca-cd) (`backend/internal/hub/mcpserver`). For Claude Code, the server is declared inline in `.claude-plugin/plugin.json`, with the Hub URL asked from the user through `userConfig`. Codex has no way to ask for the URL, so Codex users add the server with `codex mcp add`. Don't add a root `.mcp.json`: Codex loads it automatically and would get a server with a broken URL.
+
 ## Layout
 
 ```text

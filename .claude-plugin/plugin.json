@@ -7,6 +7,7 @@
   },
   "homepage": "https://orcacd.dev",
   "repository": "https://github.com/OrcaCD/skills",
+  "privacyPolicyUrl": "https://github.com/OrcaCD/skills#privacy",
   "license": "MIT",
   "keywords": [
     "orcacd",
@@ -15,5 +16,18 @@
     "docker-compose",
     "deployment"
   ],
-  "icon": "./assets/icon.png"
+  "icon": "./assets/icon.png",
+  "userConfig": {
+    "hub_url": {
+      "type": "string",
+      "title": "OrcaCD Hub URL",
+      "description": "URL of your OrcaCD Hub without a path, e.g. https://orcacd.example.com. Used to connect to the Hub's MCP server. Leave empty to only use the skills."
+    }
+  },
+  "mcpServers": {
+    "orcacd": {
+      "type": "http",
+      "url": "${user_config.hub_url}/api/v1/mcp"
+    }
+  }
 }

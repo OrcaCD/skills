@@ -9,6 +9,8 @@ Agent skills and plugins for <a href="https://orcacd.dev">OrcaCD</a><br><br>
 
 This repository teaches AI coding agents how to work with OrcaCD. It contains [Agent Skills](https://agentskills.io) (`SKILL.md`) that cover how OrcaCD expects a repository and its compose files to look, and what to do when a deploy fails. The skills are packaged as a plugin for Claude Code and Codex, and the `SKILL.md` files also work in any other agent that supports the format.
 
+The plugin also connects your agent to the MCP server of your OrcaCD Hub, so it can read the status and errors of your applications and deploy them after showing you a preview.
+
 > [!WARNING]
 > OrcaCD is in early development and not yet production-ready. Expect breaking changes. The skills always target the latest OrcaCD release.
 
@@ -21,11 +23,19 @@ This repository teaches AI coding agents how to work with OrcaCD. It contains [A
 /plugin install orcacd@orcacd
 ```
 
+Claude Code asks for the URL of your Hub, e.g. `https://orcacd.example.com`. Leave it empty to only use the skills, or set it later with `/plugin configure orcacd@orcacd`. Then run `/mcp` and authenticate the `orcacd` server: OrcaCD opens in the browser, where you log in and choose what the agent may do.
+
 ### Codex
 
 ```sh
 codex plugin marketplace add OrcaCD/skills
 codex plugin add orcacd@orcacd
+```
+
+Codex plugins can't ask for the Hub URL, so add the MCP server yourself. Codex opens OrcaCD in the browser to log in:
+
+```sh
+codex mcp add orcacd --url https://orcacd.example.com/api/v1/mcp
 ```
 
 ### Other agents (Cursor, OpenCode, Gemini CLI, …)
@@ -34,20 +44,32 @@ codex plugin add orcacd@orcacd
 npx skills add OrcaCD/skills
 ```
 
+To use the MCP server, add `https://<your-hub>/api/v1/mcp` as a remote (streamable HTTP) MCP server in your agent.
+
 ## Skills
 
 | Skill | Description | Requires |
 | ----- | ----------- | -------- |
-| _coming soon_ | | |
+| [writing-compose-files](skills/writing-compose-files/SKILL.md) | Repository layout and compose files that pass the agent's checks | OrcaCD ≥ 0.6.0 |
+| [fixing-failed-deploys](skills/fixing-failed-deploys/SKILL.md) | From a failed or unhealthy application to the cause and the fix, using the MCP server when connected | OrcaCD ≥ 0.6.0 |
+| [setting-up-orcacd](skills/setting-up-orcacd/SKILL.md) | Install the Hub and an agent, connect a repository and the MCP server | OrcaCD ≥ 0.6.0 |
+| [migrating-to-orcacd](skills/migrating-to-orcacd/SKILL.md) | Move manual `docker compose` stacks, Portainer stacks and Watchtower to OrcaCD without losing data | OrcaCD ≥ 0.6.0 |
 
-Planned skills (see [OrcaCD/orca-cd#536](https://github.com/OrcaCD/orca-cd/issues/536)):
+## MCP server
 
-- **Writing compose files:** repository layout and compose files that pass the agent's checks.
-- **Fixing a failed deploy:** from a failed state to the likely cause and the fix.
-- **Setup and onboarding:** install the Hub and an agent, connect a repository, webhooks vs. polling.
-- **Migrating to OrcaCD:** from manual `docker compose`, Portainer stacks or Watchtower.
+The Hub serves an MCP server at `/api/v1/mcp` with these tools:
 
-An MCP server built into the Hub will give agents access to live application and deploy status. Once it ships, this plugin will also configure it.
+| Tool | Scope |
+| ---- | ----- |
+| `list_applications`, `get_application` | `application:read` |
+| `list_agents` | `agent:read` |
+| `preview_deploy`, `deploy_application` | `application:deploy` |
+
+You choose the scopes when you log in. A deploy always needs a preview first, so the agent can't deploy something you haven't seen. Connections show up under **Settings → API Tokens** in OrcaCD, where you can revoke them. Set `DISABLE_MCP=true` on the Hub to turn the MCP server off.
+
+## Privacy
+
+The plugin only connects to the OrcaCD Hub you configure. No data is sent to the OrcaCD project or anyone else.
 
 ## Versioning
 
